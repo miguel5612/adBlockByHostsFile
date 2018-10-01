@@ -38,7 +38,8 @@ set "cmd=findstr /R /N "^^" hostList.csv | find /C ":""
 for /f %%a in ('!cmd!') do set number=%%a
 REM num to progress bar
 set /a progress = 0 
-set /a numberToProgress = %number%    /   %numP%
+REM set /a numberToProgress = %number%    /   %numP%
+set /a numberToProgress = 1
 REM muestre los datos
 echo number: %number%
 echo numberDiv: %numberToProgress%
@@ -50,18 +51,18 @@ rem Initialize the array of our hosts to toggle
 for /F "tokens=*" %%a in (hostList.csv) do (
     set /a numhosts+=1
     set "host!numhosts!=%%~a"
-    REM echo %%a
+    echo %%a
     set /a progress  = !numhosts!/%numberToProgress%
-    REM echo numHost: !numhosts!
-    REM echo number: %number%
-    REM echo numberDiv: %numberToProgress%
-    REM echo progress=!progress!
-    call :drawProgressBar !progress!
-    REM pause
+     echo numHost: !numhosts!
+     echo number: %number%
+     echo numberDiv: %numberToProgress%
+     echo progress=!progress!
+     call :drawProgressBar !progress!     
 )
 
 >"%hostspath%.new" (
     set /a numhosts=0
+    echo ALL OK
     rem Parse the hosts file, skipping the already present hosts from our list.
     rem Blank lines are preserved using findstr trick.
     for /f "delims=: tokens=1*" %%a in ('%SystemRoot%\System32\findstr.exe /n /r /c:".*" "%hostspath%"') do (
@@ -74,19 +75,16 @@ for /F "tokens=*" %%a in (hostList.csv) do (
                 echo - %%b 1>&2
             )
         )
-        if not "!skipline!"=="true" echo.%%b
-        set /a progress  = !numhosts!/%numberToProgress%/2
-        call :drawProgressBar !progress!
+        if not "!skipline!"=="true" echo.%%b        
     )
     set /a numhosts=0
     for /L %%h in (1,1,!numhosts!) do (
         if not "!found%%h!"=="true" echo + !host%%h! 1>&2 & echo !host%%h!
-        set /a progress  = !numhosts!/%numberToProgress%/2
-        call :drawProgressBar !progress!
     )
 )
 cls
-
+set /a progress = 100
+call :drawProgressBar !progress!
 endlocal
 pause
 
