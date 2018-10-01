@@ -29,7 +29,15 @@ if '%errorlevel%' NEQ '0' (
 setlocal EnableExtensions EnableDelayedExpansion
 
 set "hostspath=%SystemRoot%\System32\drivers\etc\hosts"
-
+Title Hosts File Automatic Update 
+echo.
+cls
+echo.
+echo.
+echo Loading...
+echo ----------------------------------
+echo Progress: ²²²²²²²²²²²²²²²²²²²² 5%%
+echo ----------------------------------
 rem Initialize the array of our hosts to toggle
 for %%a in (
     "127.0.0.1  localhost"
@@ -2397,7 +2405,7 @@ for %%a in (
     "127.0.0.1 mp3red.cc"
     "127.0.0.1 mpkhi-bk.multi.net.pk"
     "127.0.0.1 mplayerdownloader.com"
-    "127.0.0.1 ms"127.0.0.101341.club"
+    "127.0.0.1 ms127.0.0.101341.club"
     "127.0.0.1 msgstore2.pldtprv.net"
     "127.0.0.1 mshelp247.weebly.com"
     "127.0.0.1 mtccsun.imtech.ernet.in"
@@ -13838,6 +13846,13 @@ for %%a in (
     set /a numhosts+=1
     set "host!numhosts!=%%~a"
 )
+cls
+echo.
+echo.
+echo Loading...
+echo ----------------------------------
+echo Progress: ÛÛÛÛÛÛÛÛÛ²²²²²²²²²²² 45%%
+echo ----------------------------------
 
 >"%hostspath%.new" (
     rem Parse the hosts file, skipping the already present hosts from our list.
@@ -13857,7 +13872,22 @@ for %%a in (
         if not "!found%%h!"=="true" echo + !host%%h! 1>&2 & echo !host%%h!
     )
 )
+cls
+echo.
+echo.
+echo Loading...
+echo ----------------------------------
+echo Progress: ÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛ²² 90%%
+echo ----------------------------------
 move /y "%hostspath%" "%hostspath%.bak" >nul || echo Can't backup %hostspath%
 move /y "%hostspath%.new" "%hostspath%" >nul || echo Can't update %hostspath%
+cls
+echo.
+echo.
+echo Setup complete... Thanks :)
+echo ----------------------------------
+echo Progress: ÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛ 100%%
+echo.
+echo.
 endlocal
 pause
