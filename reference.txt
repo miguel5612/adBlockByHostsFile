@@ -1,0 +1,1 @@
+https://stackoverflow.com/questions/38882468/run-exe-processes-in-parallel-and-update-progress-bar-in-net-4-5
