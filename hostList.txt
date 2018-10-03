@@ -2058,7 +2058,6 @@ ff02::3 ip6-allhosts
 0.0.0.0 www.iphonegames3g.com
 0.0.0.0 www.jmp2click.com
 0.0.0.0 www.microsoft-update.name
-0.0.0.0 wwwfacebook.com
 0.0.0.0 100.1qingdao.com
 0.0.0.0 7minuteworkout.com
 0.0.0.0 addshoppers.com
