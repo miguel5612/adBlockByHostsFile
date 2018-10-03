@@ -2,6 +2,14 @@
 127.0.0.1 localhost.localdomain
 127.0.0.1 local
 255.255.255.255 broadcasthost
+0.0.0.0 adclick.g.doublecklick.net
+0.0.0.0 googleads.g.doubleclick.net
+0.0.0.0 http://www.googleadservices.com
+0.0.0.0 pubads.g.doubleclick.net
+0.0.0.0 securepubads.g.doubleclick.net
+0.0.0.0 pagead2.googlesyndication.com
+0.0.0.0 spclient.wg.spotify.com
+0.0.0.0 audio2.spotify.com
 ::1 localhost
 ::1 ip6-localhost
 ::1 ip6-loopback
