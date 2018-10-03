@@ -33,60 +33,71 @@ if '%errorlevel%' NEQ '0' (
 set "hostspath=%SystemRoot%\System32\drivers\etc\hosts"
 
 REM Get the lines in hosts.csv
-set numP=50
-set "cmd=findstr /R /N "^^" hostList.csv | find /C ":""
+set numP=85
+set "cmd=findstr /R /N "^^" hostList.txt | find /C ":""
 for /f %%a in ('!cmd!') do set number=%%a
 REM num to progress bar
 set /a progress = 0 
 REM set /a numberToProgress = %number%    /   %numP%
-set /a numberToProgress = 1
+set /a numberToProgress = %number%    /   %numP%
 REM muestre los datos
-echo number: %number%
-echo numberDiv: %numberToProgress%
-echo progress: %progress%
+REM echo number: %number%
+REM echo numberDiv: %numberToProgress%
+REM echo progress: %progress%
 
 REM  load array
-pause
 rem Initialize the array of our hosts to toggle
-for /F "tokens=*" %%a in (hostList.csv) do (
-    set /a numhosts+=1
-    set "host!numhosts!=%%~a"
-    echo %%a
-    set /a progress  = !numhosts!/%numberToProgress%
-     echo numHost: !numhosts!
-     echo number: %number%
-     echo numberDiv: %numberToProgress%
-     echo progress=!progress!
-     call :drawProgressBar !progress!     
+REM configuration of new file HOSTS
+DEL "%hostspath%.new"
+REM echo # Copyright (c) 1993-2009 Microsoft Corp  >> "%hostspath%.new"
+REM echo #  >> "%hostspath%.new"
+REM echo # This is a sample HOSTS file used by Microsoft TCP/IP for Windows. >> "%hostspath%.new"
+REM echo #  >> "%hostspath%.new"
+REM echo # This file contains the mappings of IP addresses to host names. Each  >> "%hostspath%.new"
+REM echo # entry should be kept on an individual line. The IP address should  >> "%hostspath%.new"
+REM echo # be placed in the first column followed by the corresponding host name.  >> "%hostspath%.new"
+REM echo # The IP address and the host name should be separated by at least one  >> "%hostspath%.new"
+REM echo # space.  >> "%hostspath%.new"
+REM echo #  >> "%hostspath%.new"
+REM echo # Additionally, comments (such as these) may be inserted on individual >> "%hostspath%.new"
+REM echo # lines or following the machine name denoted by a '#' symbol.  >> "%hostspath%.new"
+REM echo #  >> "%hostspath%.new"
+REM echo # For example:"  >> "%hostspath%.new
+REM echo #  >> "%hostspath%.new"
+REM echo #      102.54.94.97     rhino.acme.com          # source server  >> "%hostspath%.new"
+REM echo #       38.25.63.10     x.acme.com              # x client host  >> "%hostspath%.new"
+REM echo # localhost name resolution is handled within DNS itself.  >> "%hostspath%.new"
+REM echo #    127.0.0.1       localhost  >> "%hostspath%.new"
+REM echo #   ::1             localhost  >> "%hostspath%.new"
+REM echo 127.0.0.1  localhost  >> "%hostspath%.new"
+
+for /f "delims=" %%a in ('Type "%hostspath%"') Do (
+    echo %%a >> "%hostspath%.new"
 )
 
->"%hostspath%.new" (
-    set /a numhosts=0
-    echo ALL OK
-    rem Parse the hosts file, skipping the already present hosts from our list.
-    rem Blank lines are preserved using findstr trick.
-    for /f "delims=: tokens=1*" %%a in ('%SystemRoot%\System32\findstr.exe /n /r /c:".*" "%hostspath%"') do (
-        set /a numhosts+=1
-        set skipline=
-        for /L %%h in (1,1,!numhosts!) do (
-            if "%%b"=="!host%%h!" (
-                set skipline=true
-                set found%%h=true
-                echo - %%b 1>&2
-            )
-        )
-        if not "!skipline!"=="true" echo.%%b        
-    )
-    set /a numhosts=0
-    for /L %%h in (1,1,!numhosts!) do (
-        if not "!found%%h!"=="true" echo + !host%%h! 1>&2 & echo !host%%h!
-    )
+for /F "tokens=*" %%a in (hostList.txt) do (
+    set /a numhosts+=1
+    set "host!numhosts!=%%~a"
+    REM echo %%a
+    set /a progress  = !numhosts!/%numberToProgress%
+     REM echo numHost: !numhosts!
+     REM echo number: %number%
+     REM echo numberDiv: %numberToProgress%
+     REM echo progress=!progress!
+     call :drawProgressBar !progress! 
+     find /c "%%a" "%hostspath%" >NUL || ( 
+        echo %%a >> "%hostspath%.new"
+        REM echo + %%a      
+    ) 
 )
-cls
+
+echo numHosts: !numhosts!
+move /y "%hostspath%" "%hostspath%.bak" >nul || echo Can't backup %hostspath%
+move /y "%hostspath%.new" "%hostspath%" >nul || echo Can't update %hostspath%
 set /a progress = 100
 call :drawProgressBar !progress!
-endlocal
 pause
+endlocal
 
 
 
