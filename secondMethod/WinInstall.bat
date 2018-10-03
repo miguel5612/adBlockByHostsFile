@@ -44,11 +44,56 @@ REM muestre los datos
 REM echo number: %number%
 REM echo numberDiv: %numberToProgress%
 REM echo progress: %progress%
+
 REM  load array
 rem Initialize the array of our hosts to toggle
 REM configuration of new file HOSTS
+DEL "%hostspath%.new"
+REM echo # Copyright (c) 1993-2009 Microsoft Corp  >> "%hostspath%.new"
+REM echo #  >> "%hostspath%.new"
+REM echo # This is a sample HOSTS file used by Microsoft TCP/IP for Windows. >> "%hostspath%.new"
+REM echo #  >> "%hostspath%.new"
+REM echo # This file contains the mappings of IP addresses to host names. Each  >> "%hostspath%.new"
+REM echo # entry should be kept on an individual line. The IP address should  >> "%hostspath%.new"
+REM echo # be placed in the first column followed by the corresponding host name.  >> "%hostspath%.new"
+REM echo # The IP address and the host name should be separated by at least one  >> "%hostspath%.new"
+REM echo # space.  >> "%hostspath%.new"
+REM echo #  >> "%hostspath%.new"
+REM echo # Additionally, comments (such as these) may be inserted on individual >> "%hostspath%.new"
+REM echo # lines or following the machine name denoted by a '#' symbol.  >> "%hostspath%.new"
+REM echo #  >> "%hostspath%.new"
+REM echo # For example:"  >> "%hostspath%.new
+REM echo #  >> "%hostspath%.new"
+REM echo #      102.54.94.97     rhino.acme.com          # source server  >> "%hostspath%.new"
+REM echo #       38.25.63.10     x.acme.com              # x client host  >> "%hostspath%.new"
+REM echo # localhost name resolution is handled within DNS itself.  >> "%hostspath%.new"
+REM echo #    127.0.0.1       localhost  >> "%hostspath%.new"
+REM echo #   ::1             localhost  >> "%hostspath%.new"
+REM echo 127.0.0.1  localhost  >> "%hostspath%.new"
+
+for /f "delims=" %%a in ('Type "%hostspath%"') Do (
+    echo %%a >> "%hostspath%.new"
+)
+
+for /F "tokens=*" %%a in (hostList.txt) do (
+    set /a numhosts+=1
+    set "host!numhosts!=%%~a"
+    REM echo %%a
+    set /a progress  = !numhosts!/%numberToProgress%
+     REM echo numHost: !numhosts!
+     REM echo number: %number%
+     REM echo numberDiv: %numberToProgress%
+     REM echo progress=!progress!
+     call :drawProgressBar !progress! 
+     find /c "%%a" "%hostspath%" >NUL || ( 
+        echo %%a >> "%hostspath%.new"
+        REM echo + %%a      
+    ) 
+)
+
+echo numHosts: !numhosts!
 move /y "%hostspath%" "%hostspath%.bak" >nul || echo Can't backup %hostspath%
-copy /y "hostList.txt" "%hostspath%" >nul || echo Can't update %hostspath%
+move /y "%hostspath%.new" "%hostspath%" >nul || echo Can't update %hostspath%
 set /a progress = 100
 call :drawProgressBar !progress!
 pause
