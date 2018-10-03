@@ -31,22 +31,8 @@ if '%errorlevel%' NEQ '0' (
     CD /D "%~dp0"
 
 set "hostspath=%SystemRoot%\System32\drivers\etc\hosts"
-
-REM Get the lines in hosts.csv
-set numP=85
 set "cmd=findstr /R /N "^^" hostList.txt | find /C ":""
-for /f %%a in ('!cmd!') do set number=%%a
-REM num to progress bar
 set /a progress = 0 
-REM set /a numberToProgress = %number%    /   %numP%
-set /a numberToProgress = %number%    /   %numP%
-REM muestre los datos
-REM echo number: %number%
-REM echo numberDiv: %numberToProgress%
-REM echo progress: %progress%
-REM  load array
-rem Initialize the array of our hosts to toggle
-REM configuration of new file HOSTS
 move /y "%hostspath%" "%hostspath%.bak" >nul || echo Can't backup %hostspath%
 copy /y "hostList.txt" "%hostspath%" >nul || echo Can't update %hostspath%
 set /a progress = 100
