@@ -21979,9 +21979,7 @@ ff02::3 ip6-allhosts
 0.0.0.0 www3.doubleclick.com
 0.0.0.0 www.doubleclick.com
 0.0.0.0 www.bt.emsecure.net
-0.0.0.0 www.youtube.com/ad_companion
-0.0.0.0 www.youtube.com/api/stats/ads
-# 0.0.0.0  www.youtube-nocookie.com #[affects various videos]
+0.0.0.0  www.youtube-nocookie.com #[affects various videos]
 # [Google / DoubleClick][AS15169][66.249.64.0 - 66.249.95.255]
 0.0.0.0 ad.rs.doubleclick.net
 # [Google][AS22577][70.32.128.0 - 70.32.159.255]
